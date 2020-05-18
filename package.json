@@ -1,0 +1,14 @@
+{
+  "name": "nicocale.ts",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "ssh://git@github.com/tosite0345/nicocale.ts.git",
+  "author": "tosite <tl091264@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nuxt"
+  },
+  "dependencies": {
+    "nuxt": "^2.12.2"
+  }
+}
