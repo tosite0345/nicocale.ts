@@ -13,6 +13,8 @@
     "sourceMap": true,
     "strict": true,
     "noEmit": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "baseUrl": ".",
     "paths": {
       "~/*": [
