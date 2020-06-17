@@ -1,7 +1,14 @@
 import { getManager } from 'typeorm'
 import { User }  from './repositories/typeorm/entity/User'
 import { injectable, inject, Container } from 'inversify'
-import express, { Router, Request, Response, NextFunction } from 'express'
+
+// X. Dependency Injection -----------------
+export const symbols = {
+  sayHelloUsecase: Symbol.for('sayHelloUsecase'),
+  sayByeUsecase: Symbol.for('sayByeUsecase'),
+  userRepository: Symbol.for('userRepository'),
+  helloController: Symbol.for('helloController'),
+}
 
 // 4. Entities -> Enterprise Business Rules -----------------
 export class CommentEntity {
@@ -12,11 +19,11 @@ export class CommentEntity {
 
 // 3. Usecases -> Application Business Rules -----------------
 export interface SayHelloUsecase {
-  execute(username: string): string
+  execute(username: string): Promise<string>
 }
 
 export interface SayByeUsecase {
-  execute(username: string): string
+  execute(username: string): Promise<string>
 }
 
 @injectable()
@@ -28,8 +35,7 @@ export class SayHelloUsecaseImpl implements SayHelloUsecase {
   ) {
     this.userRepo = userRepo
   }
-  public execute(username: string): string {
-    const result = this.userRepo.find(username)
+  public async execute(username: string): Promise<string> {
     const ce = new CommentEntity()
     return ce.makeHello(username)
   }
@@ -37,7 +43,7 @@ export class SayHelloUsecaseImpl implements SayHelloUsecase {
 
 @injectable()
 export class SayByeUsecaseImpl implements SayByeUsecase {
-  execute(username: string): string {
+  public async execute(username: string): Promise<string> {
     return 'remember perl harvor'
   }
 }
@@ -143,23 +149,17 @@ export class HelloController {
     this.sayByeUsecase = sayByeUsecase
   }
 
-  public sayHello(username: string) {
-    return this.sayHelloUsecase.execute(username)
+  public async sayHello(username: string) {
+    return await this.sayHelloUsecase.execute(username)
   }
-  public sayBye(username: string) {
-    return this.sayByeUsecase.execute(username)
+  public async sayBye(username: string) {
+    return await this.sayByeUsecase.execute(username)
   }
 }
 
-// X. Dependency Injection -----------------
-const symbols = {
-  sayHelloUsecase: Symbol.for('sayHelloUsecase'),
-  sayByeUsecase: Symbol.for('sayByeUsecase'),
-  userRepository: Symbol.for('userRepository'),
-  helloController: Symbol.for('helloController'),
-}
+// X. DI Container
 
-const container = new Container()
+export const container = new Container()
 const dev = process.env.NODE_ENV === 'development'
 container.bind(symbols.sayHelloUsecase).to(SayHelloUsecaseImpl)
 container.bind(symbols.sayByeUsecase).to(SayByeUsecaseImpl)
@@ -167,26 +167,4 @@ container.bind(symbols.userRepository).to(dev ? FakeUserRepository : TypeOrmUser
 container.bind(symbols.helloController).to(HelloController)
 
 // 1. Express -> Frameworks and Drivers -----------------
-const router = Router()
-const controller = container.get<HelloController>(symbols.helloController)
-
-router.get('/', (req: Request, res: Response, next: NextFunction) => {
-  const username: string = req.body.username
-  if (!username) {
-    res.sendStatus(400)
-  }
-
-  // ↓ プログラムを破壊するやり方
-  // HelloController.prototype.sayHello = (username: string) => {
-  //   console.log('ばーーーーーーか')
-  // }
-
-  // ↓ テスト専用の書き方
-  // jest.spyOn(HelloContoroller.prototype, 'sayHello').mockResolvedValue(() => {
-  //   console.log('ばーーーーーーか')
-  // })
-  // jest.mockRestore()
-
-  const result = controller.sayHello(username)
-  res.json(res)
-})
+// goto index.ts
