@@ -12,11 +12,11 @@ export class CommentEntity {
 
 // 3. Usecases -> Application Business Rules -----------------
 export interface SayHelloUsecase {
-  execute(username: string)
+  execute(username: string): string
 }
 
 export interface SayByeUsecase {
-  execute(username: string)
+  execute(username: string): string
 }
 
 @injectable()
@@ -28,44 +28,65 @@ export class SayHelloUsecaseImpl implements SayHelloUsecase {
   ) {
     this.userRepo = userRepo
   }
-  public execute(username: string) {
+  public execute(username: string): string {
     const result = this.userRepo.find(username)
     const ce = new CommentEntity()
-    return { hello: ce.makeHello(username) }
+    return ce.makeHello(username)
   }
 }
 
 @injectable()
 export class SayByeUsecaseImpl implements SayByeUsecase {
-  execute(username: string) {
+  execute(username: string): string {
     return 'remember perl harvor'
   }
 }
 
 // 2. Reposiotories -> Interface and Adapters -----------------
+export interface UserRepositoryResponse {
+  id: number
+  name: string
+  point: number
+}
+
 export interface UserRepository {
-  find(username: string): Promise<number>
+  find(username: string): Promise<UserRepositoryResponse>
+  findByPoint(point: number): Promise<UserRepositoryResponse[]>
   add(username: string, point: number): Promise<void>
 }
 
 @injectable()
 export class FakeUserRepository implements UserRepository {
-  private static userList = {
-    tosite: 0,
-    zuckey: 1,
-    orzup: 2,
-    litencat: 3,
-  }
+  private static userList: UserRepositoryResponse[] = [
+    {
+      id: 1,
+      name: 'tosite',
+      point: 1,
+    },
+    {
+      id: 2,
+      name: 'zuckey',
+      point: 2,
+    }
+  ]
 
-  async find(username: string) {
-    if (!FakeUserRepository.userList[username]) {
+  async find(username: string): Promise<UserRepositoryResponse> {
+    const target = FakeUserRepository.userList.find((user) => {
+      return user.name === username
+    })
+    if (!target) {
       throw new Error('not found')
     }
-    return FakeUserRepository.userList[username]
+    return target
+  }
+
+  async findByPoint(point: number): Promise<UserRepositoryResponse[]> {
+    const result = FakeUserRepository.userList.filter((user) => user.point === point)
+    return result
   }
 
   async add(username: string, point: number) {
-    FakeUserRepository.userList[username] =+ point
+    (await this.find(username)).point =+ point
   }
 }
 
@@ -77,7 +98,22 @@ export class TypeOrmUserRepository implements UserRepository {
     if (!res) {
       throw new Error('not found')
     }
-    return res.id
+    return {
+      id: res.id,
+      name: res.name,
+      point: 0,
+    }
+  }
+
+  async findByPoint(point: number) {
+    const mgr = getManager()
+    const result = await mgr.find(User, { point })
+    return result.filter((user) => user.point === point)
+      .map((v) => ({
+        id: v.id,
+        name: v.name,
+        point: 0,
+      }))
   }
 
   async add(username: string, point: number) {
