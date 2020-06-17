@@ -1,8 +1,10 @@
 import 'reflect-metadata'
 import {Nuxt, Builder} from 'nuxt'
 import config from '../nuxt.config'
+import { symbols } from './symbols'
+import { container } from './inversify.config'
+import { HelloController } from './controllers'
 import express, { Router, Request, Response, NextFunction } from 'express'
-import { container, symbols, HelloController } from './sample'
 
 /**
  * Promise で書かれた Express のルーティングをラップしエラーハンドラーで検知できるようにします
