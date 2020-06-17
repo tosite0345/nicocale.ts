@@ -1,7 +1,7 @@
 import {Nuxt, Builder} from 'nuxt'
 import config from '../nuxt.config'
 import express, { Router, Request, Response, NextFunction } from 'express'
-import "reflect-metadata"
+import 'reflect-metadata'
 
 const app = express()
 const isProd = (process.env.NODE_ENV === 'production')
