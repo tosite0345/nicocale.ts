@@ -12,3 +12,8 @@ userRouter.get('/', rescue(async (req, res) => {
     const result = await controller.findAll()
     res.json(result)
 }))
+
+userRouter.get('/:id', rescue(async (req, res) => {
+    const result = await controller.find(Number(req.params.id))
+    res.json(result)
+}))

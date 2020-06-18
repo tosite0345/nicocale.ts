@@ -16,6 +16,7 @@ container.bind(symbols.userController).to(c.UserController)
 container.bind(symbols.sayHelloUsecase).to(u.SayHelloUsecaseImpl)
 container.bind(symbols.sayByeUsecase).to(u.SayByeUsecaseImpl)
 container.bind(symbols.userFindAllUsecase).to(u.UserFindAllUsecaseImpl)
+container.bind(symbols.userFindUsecase).to(u.UserFindUsecaseImpl)
 
 // Repositories
 container.bind(symbols.userRepository).to(dev ? r.FakeUserRepository : r.TypeormUserRepository)

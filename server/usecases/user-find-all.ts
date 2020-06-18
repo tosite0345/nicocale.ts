@@ -21,7 +21,7 @@ export class UserFindAllUsecaseImpl implements UserFindAllUsecase {
       {
         id: 2,
         name: 'zuckey',
-      }
+      },
     ]
   }
 }
