@@ -2,7 +2,7 @@ import 'reflect-metadata'
 import {Nuxt, Builder} from 'nuxt'
 import config from '../nuxt.config'
 import express from 'express'
-import * as apiRoutes from './routes/api'
+import { apiRouter } from './routes/api'
 
 const app = express()
 const isProd = (process.env.NODE_ENV === 'production')
@@ -11,7 +11,7 @@ const port = parseInt(process.env.PORT || '3000', 10)
 config.dev = !isProd
 const nuxt = new Nuxt(config)
 
-app.use('/api/hello', apiRoutes.helloRouter)
+app.use('/api/', apiRouter)
 app.use(nuxt.render)
 
 // ホットリローディングする開発モードのときのみビルドする
