@@ -1,7 +1,7 @@
 // 2. Interface and Adapters (TypeORM ăŽ Repositories)
 
 import { injectable, inject } from 'inversify'
-import { UserRepository, UserRepositoryResponse } from '../../repositories'
+import { UserRepository, UserCreateRequest, UserResponse, UserRepositoryResponse } from '../../repositories'
 
 @injectable()
 export class FakeUserRepository implements UserRepository {
@@ -26,6 +26,16 @@ export class FakeUserRepository implements UserRepository {
       throw new Error('not found')
     }
     return target
+  }
+
+  public async create(arg: UserCreateRequest): Promise<UserResponse> {
+    const user = {
+      id: arg.id,
+      name: arg.name,
+      point: arg.point
+    }
+    FakeUserRepository.userList.push(user)
+    return user
   }
 
   async findByPoint(point: number): Promise<UserRepositoryResponse[]> {

@@ -3,7 +3,7 @@
 import { getManager } from 'typeorm'
 import { injectable } from 'inversify'
 import { TypeormUserEntity } from '../entities/user'
-import { UserRepository } from '../../../repositories'
+import { UserRepository, UserResponse, UserCreateRequest } from '../../../repositories'
 
 @injectable()
 export class TypeormUserRepository implements UserRepository {
@@ -18,6 +18,18 @@ export class TypeormUserRepository implements UserRepository {
       name: res.name,
       point: 0,
     }
+  }
+
+  public async create(arg: UserCreateRequest): Promise<UserResponse> {
+    const entity = new TypeormUserEntity()
+    for (const i of Object.keys(arg)) {
+      entity[i] = arg[i]
+    }
+    entity.id = arg.id
+    entity.name = arg.name
+    entity.point = arg.point
+    const mgr = getManager()
+    return new UserResponse(await mgr.save(entity))
   }
 
   async findByPoint(point: number) {
