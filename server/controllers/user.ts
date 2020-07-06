@@ -3,6 +3,7 @@
 import { injectable, inject } from 'inversify'
 import { symbols } from '../symbols'
 import { UserFindAllUsecase, UserFindUsecase } from '../usecases'
+import { UserCreateRequest } from '../repositories'
 
 @injectable()
 export class UserController {
@@ -20,7 +21,11 @@ export class UserController {
   public async findAll() {
     return await this.userFindAllUsecase.execute()
   }
-  public async find(id: number) {
+  public async find(id: string) {
     return await this.userFindUsecase.execute(id)
+  }
+
+  public async create(args: UserCreateRequest) {
+    // TODO: ここどうしよう
   }
 }

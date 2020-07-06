@@ -19,7 +19,6 @@ export interface UserRepositoryResponse {
   point: number
 }
 export interface UserCreateRequest {
-  id: string
   name: string
   point: number
 }

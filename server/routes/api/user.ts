@@ -13,7 +13,15 @@ userRouter.get('/', rescue(async (req, res) => {
     res.json(result)
 }))
 
+userRouter.post('/', rescue(async (req, res) => {
+    const result = await controller.create({
+        name: req.params.name,
+        point: Number(req.params.point)
+    })
+    res.json(result)
+}))
+
 userRouter.get('/:id', rescue(async (req, res) => {
-    const result = await controller.find(Number(req.params.id))
+    const result = await controller.find(req.params.id)
     res.json(result)
 }))

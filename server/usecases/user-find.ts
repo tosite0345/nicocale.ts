@@ -2,20 +2,22 @@
 import { injectable } from 'inversify'
 
 export interface UserFindUsecaseResponse {
-  id: number
+  id: string
   name: string
+  point: number
 }
 
 export interface UserFindUsecase {
-  execute(id: number): Promise<UserFindUsecaseResponse>
+  execute(id: string): Promise<UserFindUsecaseResponse>
 }
 
 @injectable()
 export class UserFindUsecaseImpl implements UserFindUsecase {
-  public async execute(id: number): Promise<UserFindUsecaseResponse> {
+  public async execute(id: string): Promise<UserFindUsecaseResponse> {
     return {
-      id: 1,
+      id: '8580d5ab-ec45-26dc-11f5-1ed3a4622282',
       name: 'tosite',
+      point: 10
     }
   }
 }
