@@ -1,23 +1,25 @@
+import { v4 as uuid } from 'uuid'
+
 export class UserResponse {
-  public id: number
+  public id: string
   public name: string
   public point: number
 
   public constructor(arg?: Partial<UserResponse>) {
     arg = arg ? arg : {}
-    this.id = arg.id || 0
+    this.id = uuid()
     this.name = arg.name || ''
     this.point = arg.point || 0
   }
 }
 
 export interface UserRepositoryResponse {
-  id: number
+  id: string
   name: string
   point: number
 }
 export interface UserCreateRequest {
-  id: number
+  id: string
   name: string
   point: number
 }

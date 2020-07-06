@@ -2,6 +2,7 @@
 
 import { getManager } from 'typeorm'
 import { injectable } from 'inversify'
+import { v4 as uuid } from 'uuid'
 import { TypeormUserEntity } from '../entities/user'
 import { UserRepository, UserResponse, UserCreateRequest } from '../../../repositories'
 
@@ -22,10 +23,7 @@ export class TypeormUserRepository implements UserRepository {
 
   public async create(arg: UserCreateRequest): Promise<UserResponse> {
     const entity = new TypeormUserEntity()
-    for (const i of Object.keys(arg)) {
-      entity[i] = arg[i]
-    }
-    entity.id = arg.id
+    entity.id = uuid()
     entity.name = arg.name
     entity.point = arg.point
     const mgr = getManager()

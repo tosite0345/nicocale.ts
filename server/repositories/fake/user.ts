@@ -1,18 +1,20 @@
 // 2. Interface and Adapters (TypeORM ăŽ Repositories)
 
 import { injectable, inject } from 'inversify'
+import { v4 as uuid } from 'uuid'
 import { UserRepository, UserCreateRequest, UserResponse, UserRepositoryResponse } from '../../repositories'
+import { UpdateQueryBuilder } from 'typeorm'
 
 @injectable()
 export class FakeUserRepository implements UserRepository {
   private static userList: UserRepositoryResponse[] = [
     {
-      id: 1,
+      id: '8580d5ab-ec45-26dc-11f5-1ed3a4622282',
       name: 'tosite',
       point: 1,
     },
     {
-      id: 2,
+      id: '0019af89-8703-cb7b-7dca-9cf981f9a1b8',
       name: 'zuckey',
       point: 2,
     }
@@ -30,7 +32,7 @@ export class FakeUserRepository implements UserRepository {
 
   public async create(arg: UserCreateRequest): Promise<UserResponse> {
     const user = {
-      id: arg.id,
+      id: uuid(),
       name: arg.name,
       point: arg.point
     }
