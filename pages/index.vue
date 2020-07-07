@@ -1,9 +1,20 @@
 <template>
   <div>
-    <h1>Hello world!</h1>
-    <button @click="getUser">get user</button>
-    <button @click="getUsers">get users</button>
-    <button @click="createUser">create user</button>
+    <h1>Users API</h1>
+    <div>
+      <button @click="getUsers">get users</button>
+    </div>
+
+    <div>
+      <input type="text" v-model="userId" />
+      <button @click="getUser">get user</button>
+    </div>
+
+    <div>
+      <input type="text" v-model="createparams.name" />
+      <input type="number" v-model="createparams.point" />
+      <button @click="createUser">create user</button>
+    </div>
     <pre>{{ result }}</pre>
   </div>
 </template>
@@ -14,6 +25,11 @@ export default {
   asyncData() {
     return {
       result: [],
+      userId: '8580d5ab-ec45-26dc-11f5-1ed3a4622282',
+      createparams: {
+        name: '',
+        point: 0,
+      },
     }
   },
   methods: {
@@ -24,13 +40,14 @@ export default {
       })
     },
     getUser() {
-      axios.get('/api/users/8580d5ab-ec45-26dc-11f5-1ed3a4622282').then((res) => {
+      axios.get(`/api/users/${this.userId}`).then((res) => {
         console.log(res.data)
         this.result = res.data
       })
     },
     createUser() {
-      axios.post('/api/users', {}).then((res) => {
+      console.log(this.createparams)
+      axios.post('/api/users', this.createparams).then((res) => {
         console.log(res.data)
         this.result = res.data
       })
