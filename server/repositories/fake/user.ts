@@ -20,7 +20,7 @@ export class FakeUserRepository implements UserRepository {
     }
   ]
 
-  async find(id: string): Promise<UserRepositoryResponse> {
+  public async find(id: string): Promise<UserRepositoryResponse> {
     const target = FakeUserRepository.userList.find((user) => {
       return user.id === id
     })
@@ -28,6 +28,10 @@ export class FakeUserRepository implements UserRepository {
       throw new Error('not found')
     }
     return target
+  }
+
+  public async findAll(): Promise<UserRepositoryResponse[]> {
+    return FakeUserRepository.userList
   }
 
   public async create(arg: UserCreateRequest): Promise<UserResponse> {

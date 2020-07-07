@@ -26,6 +26,7 @@ export interface UserCreateRequest {
 export interface UserRepository {
   create(v: UserCreateRequest): Promise<UserResponse>
   find(username: string): Promise<UserRepositoryResponse>
+  findAll(): Promise<UserRepositoryResponse[]>
   findByPoint(point: number): Promise<UserRepositoryResponse[]>
   add(username: string, point: number): Promise<void>
 }
