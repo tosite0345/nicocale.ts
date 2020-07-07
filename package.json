@@ -6,7 +6,7 @@
   "author": "tosite <tl091264@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node -P server/tsconfig.json server/index.ts",
+    "dev": "NODE_ENV=development ts-node -P server/tsconfig.json server/index.ts",
     "build": "nuxt-ts build",
     "generate": "nuxt-ts generate",
     "start": "nuxt-ts start"
@@ -14,14 +14,20 @@
   "dependencies": {
     "@nuxt/typescript-build": "^0.6.6",
     "@nuxt/typescript-runtime": "^0.4.6",
+    "@nuxtjs/axios": "^5.11.0",
+    "@types/axios": "^0.14.0",
+    "@types/body-parser": "^1.19.0",
     "@types/express": "^4.17.6",
     "@types/node": "^14.0.12",
+    "@types/uuid": "^8.0.0",
+    "body-parser": "^1.19.0",
     "express": "^4.17.1",
     "inversify": "^5.0.1",
     "mysql": "^2.18.1",
     "nuxt": "^2.12.2",
     "reflect-metadata": "^0.1.13",
-    "typeorm": "^0.2.25"
+    "typeorm": "^0.2.25",
+    "uuid": "^8.2.0"
   },
   "devDependencies": {
     "@types/mysql": "^2.15.13"

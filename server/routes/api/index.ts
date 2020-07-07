@@ -5,4 +5,4 @@ import { userRouter } from './user'
 export const apiRouter = Router()
 
 apiRouter.use('/hello', helloRouter)
-apiRouter.use('/user', userRouter)
+apiRouter.use('/users', userRouter)

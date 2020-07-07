@@ -1,31 +1,47 @@
-// 2. Interface and Adapters (TypeORM ăŽ Repositories)
+// 2. Interface and Adapters (TypeORM の Repositories)
 
 import { injectable, inject } from 'inversify'
-import { UserRepository, UserRepositoryResponse } from '../../repositories'
+import { v4 as uuid } from 'uuid'
+import { UserRepository, UserCreateRequest, UserResponse, UserRepositoryResponse } from '../../repositories'
+import { UpdateQueryBuilder } from 'typeorm'
 
 @injectable()
 export class FakeUserRepository implements UserRepository {
   private static userList: UserRepositoryResponse[] = [
     {
-      id: 1,
+      id: '8580d5ab-ec45-26dc-11f5-1ed3a4622282',
       name: 'tosite',
       point: 1,
     },
     {
-      id: 2,
+      id: '0019af89-8703-cb7b-7dca-9cf981f9a1b8',
       name: 'zuckey',
       point: 2,
     }
   ]
 
-  async find(username: string): Promise<UserRepositoryResponse> {
+  public async find(id: string): Promise<UserRepositoryResponse> {
     const target = FakeUserRepository.userList.find((user) => {
-      return user.name === username
+      return user.id === id
     })
     if (!target) {
       throw new Error('not found')
     }
     return target
+  }
+
+  public async findAll(): Promise<UserRepositoryResponse[]> {
+    return FakeUserRepository.userList
+  }
+
+  public async create(arg: UserCreateRequest): Promise<UserResponse> {
+    const user = {
+      id: uuid(),
+      name: arg.name,
+      point: arg.point
+    }
+    FakeUserRepository.userList.push(user)
+    return user
   }
 
   async findByPoint(point: number): Promise<UserRepositoryResponse[]> {

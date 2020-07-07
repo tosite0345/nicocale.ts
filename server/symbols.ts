@@ -8,6 +8,7 @@ export const symbols = {
   sayByeUsecase: Symbol.for('sayByeUsecase'),
   userFindAllUsecase: Symbol.for('userFindAllUsecase'),
   userFindUsecase: Symbol.for('userFindUsecase'),
+  userCreateUsecase: Symbol.for('userCreateUsecase'),
 
   // Repositories
   userRepository: Symbol.for('userRepository'),

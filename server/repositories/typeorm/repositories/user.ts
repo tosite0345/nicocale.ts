@@ -2,14 +2,16 @@
 
 import { getManager } from 'typeorm'
 import { injectable } from 'inversify'
+import { v4 as uuid } from 'uuid'
 import { TypeormUserEntity } from '../entities/user'
-import { UserRepository } from '../../../repositories'
+import { UserRepository, UserResponse, UserCreateRequest } from '../../../repositories'
+import { UserRepositoryResponse } from '../../interfaces/user'
 
 @injectable()
 export class TypeormUserRepository implements UserRepository {
-  async find(username: string) {
+  public async find(id: string): Promise<UserRepositoryResponse> {
     const mgr = getManager()
-    const res = await mgr.findOne(TypeormUserEntity, { name: username })
+    const res = await mgr.findOne(TypeormUserEntity, { id: id })
     if (!res) {
       throw new Error('not found')
     }
@@ -20,7 +22,24 @@ export class TypeormUserRepository implements UserRepository {
     }
   }
 
-  async findByPoint(point: number) {
+  public async findAll(): Promise<UserRepositoryResponse[]> {
+    const user = await this.find('id')
+    return [
+      user,
+      user
+    ]
+  }
+
+  public async create(arg: UserCreateRequest): Promise<UserResponse> {
+    const entity = new TypeormUserEntity()
+    entity.id = uuid()
+    entity.name = arg.name
+    entity.point = arg.point
+    const mgr = getManager()
+    return new UserResponse(await mgr.save(entity))
+  }
+
+  public async findByPoint(point: number) {
     const mgr = getManager()
     const result = await mgr.find(TypeormUserEntity, { point })
     return result.filter((user) => user.point === point)
