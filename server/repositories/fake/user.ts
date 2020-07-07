@@ -1,4 +1,4 @@
-// 2. Interface and Adapters (TypeORM ăŽ Repositories)
+// 2. Interface and Adapters (TypeORM の Repositories)
 
 import { injectable, inject } from 'inversify'
 import { v4 as uuid } from 'uuid'
@@ -20,9 +20,9 @@ export class FakeUserRepository implements UserRepository {
     }
   ]
 
-  async find(username: string): Promise<UserRepositoryResponse> {
+  async find(id: string): Promise<UserRepositoryResponse> {
     const target = FakeUserRepository.userList.find((user) => {
-      return user.name === username
+      return user.id === id
     })
     if (!target) {
       throw new Error('not found')

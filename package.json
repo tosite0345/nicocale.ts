@@ -6,7 +6,7 @@
   "author": "tosite <tl091264@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node -P server/tsconfig.json server/index.ts",
+    "dev": "NODE_ENV=development ts-node -P server/tsconfig.json server/index.ts",
     "build": "nuxt-ts build",
     "generate": "nuxt-ts generate",
     "start": "nuxt-ts start"

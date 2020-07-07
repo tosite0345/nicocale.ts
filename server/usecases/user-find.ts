@@ -1,5 +1,7 @@
 // 3. Application Business Rules
-import { injectable } from 'inversify'
+import { injectable, inject } from 'inversify'
+import { UserRepository, UserResponse } from '../repositories'
+import { symbols } from '../symbols'
 
 export interface UserFindUsecaseResponse {
   id: string
@@ -13,11 +15,15 @@ export interface UserFindUsecase {
 
 @injectable()
 export class UserFindUsecaseImpl implements UserFindUsecase {
+  private userRepo: UserRepository
+
+  public constructor(
+    @inject(symbols.userRepository) userRepo: UserRepository
+  ) {
+    this.userRepo = userRepo
+  }
+
   public async execute(id: string): Promise<UserFindUsecaseResponse> {
-    return {
-      id: '8580d5ab-ec45-26dc-11f5-1ed3a4622282',
-      name: 'tosite',
-      point: 10
-    }
+    return this.userRepo.find(id)
   }
 }
