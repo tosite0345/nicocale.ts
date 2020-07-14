@@ -37,8 +37,8 @@ export default {
         point: 0,
       },
       loginparams: {
-        id: '',
-        authToken: '',
+        username: '',
+        password: '',
       },
     }
   },

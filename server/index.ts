@@ -4,6 +4,8 @@ import config from '../nuxt.config'
 import express from 'express'
 import { apiRouter } from './routes/api'
 import * as bodyParser from 'body-parser'
+import Passport from 'passport'
+import { Strategy as LocalStrategy } from 'passport-local'
 
 const app = express()
 const isProd = (process.env.NODE_ENV === 'production')
@@ -14,6 +16,21 @@ const nuxt = new Nuxt(config)
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
+Passport.use(
+    new LocalStrategy(
+        async (username, password, done) => {
+            console.log('in')
+            try {
+                console.log('ok')
+                return done(null, {id: '1', name: 'ok', point: 1})
+            } catch (error) {
+                console.log('ng')
+                return done(error)
+            }
+        }
+    )
+)
+app.use(Passport.initialize())
 app.use('/api/', apiRouter)
 app.use(nuxt.render)
 
