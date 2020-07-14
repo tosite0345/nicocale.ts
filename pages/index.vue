@@ -15,6 +15,12 @@
       <input type="number" v-model="createparams.point" />
       <button @click="createUser">create user</button>
     </div>
+
+    <div>
+      <input type="text" v-model="loginparams.id" />
+      <input type="number" v-model="loginparams.authToken" />
+      <button @click="login">login user</button>
+    </div>
     <pre>{{ result }}</pre>
   </div>
 </template>
@@ -29,6 +35,10 @@ export default {
       createparams: {
         name: '',
         point: 0,
+      },
+      loginparams: {
+        id: '',
+        authToken: '',
       },
     }
   },
@@ -48,6 +58,13 @@ export default {
     createUser() {
       console.log(this.createparams)
       axios.post('/api/users', this.createparams).then((res) => {
+        console.log(res.data)
+        this.result = res.data
+      })
+    },
+    login() {
+      console.log(this.loginparams)
+      axios.post('/api/login', this.loginparams).then((res) => {
         console.log(res.data)
         this.result = res.data
       })
