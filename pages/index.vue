@@ -17,8 +17,8 @@
     </div>
 
     <div>
-      <input type="text" v-model="loginparams.id" />
-      <input type="number" v-model="loginparams.authToken" />
+      <input type="text" v-model="loginparams.username" />
+      <input type="text" v-model="loginparams.password" />
       <button @click="login">login user</button>
     </div>
     <pre>{{ result }}</pre>
@@ -37,8 +37,8 @@ export default {
         point: 0,
       },
       loginparams: {
-        username: '',
-        password: '',
+        username: 'hoge',
+        password: 'fuga',
       },
     }
   },
@@ -64,10 +64,15 @@ export default {
     },
     login() {
       console.log(this.loginparams)
-      axios.post('/api/login', this.loginparams).then((res) => {
-        console.log(res.data)
-        this.result = res.data
-      })
+      axios
+        .post('/api/login', this.loginparams)
+        .then((res) => {
+          console.log(res.data)
+          this.result = res.data
+        })
+        .catch((e) => {
+          console.log(e)
+        })
     },
   },
 }

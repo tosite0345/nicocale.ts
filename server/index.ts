@@ -19,12 +19,9 @@ app.use(bodyParser.json())
 Passport.use(
     new LocalStrategy(
         async (username, password, done) => {
-            console.log('in')
             try {
-                console.log('ok')
-                return done(null, {id: '1', name: 'ok', point: 1})
+                return done(null, { name: username, password: password })
             } catch (error) {
-                console.log('ng')
                 return done(error)
             }
         }

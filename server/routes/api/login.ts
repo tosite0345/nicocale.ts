@@ -10,8 +10,8 @@ const controller = container.get<LoginController>(symbols.loginController)
 
 loginRouter.post(
     '/',
-    Passport.authenticate('local', { session: false }),
+    Passport.authenticate('local', { session: false, }),
     rescue(async (req: Request, res: Response) => {
-        res.json({ok: 'ok'})
+        res.json({username: req.body.username })
     })
 )
